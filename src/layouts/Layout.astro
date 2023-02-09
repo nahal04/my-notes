@@ -5,22 +5,41 @@ export interface Props {
 
 const { title } = Astro.props;
 
-import "@fontsource/merriweather"
+import "@fontsource/merriweather";
 ---
 
 <script>
-    if (
-        localStorage.theme === "dark" ||
-        (!("theme" in localStorage) &&
-            window.matchMedia("(prefers-color-scheme: dark)").matches)
-    ) {
-        document.documentElement.classList.add("dark");
-    } else {
-        document.documentElement.classList.remove("dark");
-    }
+	import { darkMode } from "../lib/darkMode"
+
+	const [_, setDark] = darkMode
+
+	if (
+		localStorage.theme === "dark" ||
+		(!("theme" in localStorage) &&
+			window.matchMedia("(prefers-color-scheme: dark)").matches)
+	) {
+		document.documentElement.classList.add("dark");
+		setDark(true)
+	} else {
+		document.documentElement.classList.remove("dark");
+	}
+
+	window
+		.matchMedia("(prefers-color-scheme: dark)")
+		.addEventListener("change", (e) => {
+			if (e.matches) {
+				document.documentElement.classList.add("dark");
+				localStorage.theme = "dark";
+				setDark(true)
+			} else {
+				localStorage.theme = "light";
+				document.documentElement.classList.remove("dark");
+				setDark(false)
+			}
+		});
+
 </script>
 
-<!DOCTYPE html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
@@ -29,7 +48,7 @@ import "@fontsource/merriweather"
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
-	<body class="dark:bg-slate-900 transition-colors duration-300">
+	<body class="dark:bg-slate-900 transition-colors duration-400">
 		<slot />
 	</body>
 </html>
