@@ -3,6 +3,8 @@ export interface Props {
 	title: string;
 }
 
+import DarkModeToggle from "../components/DarkModeToggle";
+
 const { title } = Astro.props;
 
 import "@fontsource/merriweather";
@@ -48,7 +50,8 @@ import "@fontsource/merriweather";
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
-	<body class="dark:bg-slate-900 transition-colors duration-400">
+	<body class="dark:bg-slate-900 dark:text-slate-300 p-4 transition-colors duration-400">
+		<DarkModeToggle client:load />
 		<slot />
 	</body>
 </html>

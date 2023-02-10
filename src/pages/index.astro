@@ -1,7 +1,18 @@
 ---
+import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
+
+const notesCollection = await getCollection("notes")
 ---
 
 <Layout title="Home | Nahal's Notes">
-	<h1 class="text-blue-500">Hi</h1>
+	<h1 class="text-blue-500 dark:text-blue-300 text-center mt-6 mb-10 text-4xl lg:text-5xl">Nahal's Notes</h1>
+	{notesCollection.map(item => {
+		return (
+			<a href={`/notes/${item.slug}`} class="lg:w-1/4 block hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors duration-400 ease-out my-4 border border-slate-300 p-4 rounded-md mx-auto">
+				<h3  class="text-lg font-bold">{item.data.title}</h3>
+				<p class="text-sm text-slate-500 dark:text-slate-400">{item.slug.split("/").join(" > ")}</p>
+			</a>
+		)
+	})}
 </Layout>

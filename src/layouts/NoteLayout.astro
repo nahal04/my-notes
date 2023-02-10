@@ -14,7 +14,6 @@ const { title, createdAt, lastUpdated, author } = Astro.props;
 
 <Layout title={`${title} | Nahal's Notes`}>
     <main class="h-screen w-fit m-auto p-6">
-        <DarkModeToggle client:load />
         <header class="mb-8">
             <h1 class="text-5xl mb-2 dark:text-slate-300 font-bold tracking-wide">{title}</h1>
             <p class=" text-slate-500 text-sm">Created by {author} on {createdAt.toLocaleDateString()}, last updated on {lastUpdated.toLocaleDateString()}</p>
