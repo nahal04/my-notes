@@ -6,14 +6,13 @@ export interface Props {
 import DarkModeToggle from "../components/DarkModeToggle";
 
 const { title } = Astro.props;
-
 import "@fontsource/merriweather";
 ---
 
 <script>
-	import { darkMode } from "../lib/darkMode"
+	import { darkMode } from "../lib/darkMode";
 
-	const [_, setDark] = darkMode
+	const [_, setDark] = darkMode;
 
 	if (
 		localStorage.theme === "dark" ||
@@ -21,7 +20,7 @@ import "@fontsource/merriweather";
 			window.matchMedia("(prefers-color-scheme: dark)").matches)
 	) {
 		document.documentElement.classList.add("dark");
-		setDark(true)
+		setDark(true);
 	} else {
 		document.documentElement.classList.remove("dark");
 	}
@@ -32,14 +31,13 @@ import "@fontsource/merriweather";
 			if (e.matches) {
 				document.documentElement.classList.add("dark");
 				localStorage.theme = "dark";
-				setDark(true)
+				setDark(true);
 			} else {
 				localStorage.theme = "light";
 				document.documentElement.classList.remove("dark");
-				setDark(false)
+				setDark(false);
 			}
 		});
-
 </script>
 
 <html lang="en">
@@ -50,8 +48,16 @@ import "@fontsource/merriweather";
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
-	<body class="dark:bg-slate-900 dark:text-slate-300 p-4 transition-colors duration-400">
+	<body
+		class="dark:bg-slate-900 dark:text-slate-300 p-4 transition-colors duration-400"
+	>
 		<DarkModeToggle client:load />
 		<slot />
+		<!-- <footer class="bg-slate-700 text-slate-300 w-full p-6 text-center font-mono">
+			<p>&copy; Nahal Rahman</p>
+			<a href="https://github.com/nahal04/my-notes" class="">
+				<img src="/images/github-mark-white.svg" class="h-6 m-auto my-4" alt="Github logo">
+			</a>
+		</footer> -->
 	</body>
 </html>

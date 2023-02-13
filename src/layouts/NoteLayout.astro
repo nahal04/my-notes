@@ -6,14 +6,15 @@ interface Props {
     lastUpdated: Date;
     createdAt: Date;
     author: string;
+    draft: boolean;
 }
 
-const { title, createdAt, lastUpdated, author } = Astro.props;
+const { title, createdAt, lastUpdated, author, draft } = Astro.props;
 ---
 
 <Layout title={`${title} | Nahal's Notes`}>
-    <main class="h-screen w-fit m-auto p-6">
-        <div class="fixed left-4 bottom-4 bg-slate-300/30 dark:bg-slate-700/30 rounded-full p-2 flex items-center justify-center backdrop-blur-sm">
+    <main class="w-fit min-h-screen m-auto p-6">
+        <a href="/" class="fixed left-4 bottom-4 bg-slate-300/30 dark:bg-slate-700/30 rounded-full p-2 flex items-center justify-center backdrop-blur-sm">
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -28,7 +29,7 @@ const { title, createdAt, lastUpdated, author } = Astro.props;
                     d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
                 ></path>
             </svg>
-        </div>
+        </a>
         <header class="mb-8">
             <h1
                 class="text-5xl mb-2 dark:text-slate-300 font-bold tracking-wide"
@@ -39,6 +40,10 @@ const { title, createdAt, lastUpdated, author } = Astro.props;
                 Created by {author} on {createdAt.toLocaleDateString()}, last
                 updated on {lastUpdated.toLocaleDateString()}
             </p>
+            {
+                draft &&
+                <p class="mt-4 border  border-red-500 rounded-md p-4 text-sm text-red-500">This note is a draft. It may not be complete and is still under construction. Feel free to contribute</p>
+            }
         </header>
         <article
             class="prose lg:prose-lg prose-slate dark:prose-invert prose-headings:tracking-wide"
@@ -46,4 +51,7 @@ const { title, createdAt, lastUpdated, author } = Astro.props;
             <slot />
         </article>
     </main>
+    <footer class="text-center p-2 italic text-sm text-slate-500">
+        Still a long way to go
+    </footer>
 </Layout>
