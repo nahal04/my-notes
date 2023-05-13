@@ -1,0 +1,16 @@
+---
+interface Props {
+    name: string
+    type: "folder" | "file"
+}
+
+const {name, type} = Astro.props
+
+const urlArray = Astro.url.pathname.split("/")
+const url = urlArray.filter(segment => segment !== "" && segment !== "tree").concat(name).join("/")
+---
+
+<a href={`/${type === "folder" ? "tree" : "notes"}/${url}`} class="block m-2 max-w-sm mx-auto p-4 border border-gray-500 rounded transition-colors duration-300 ease-out hover:bg-gray-200 dark:hover:bg-gray-800">
+    <h3 class="font-bold text-lg">{name}</h3>
+    <p class="text-sm text-gray-500 my-2">{type}</p>
+</a>

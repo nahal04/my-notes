@@ -1,0 +1,23 @@
+---
+import Folder from "../../components/Folder.astro";
+import Layout from "../../layouts/Layout.astro";
+import { TreeNode, createStaticPaths, getChildren } from "../../lib/tree";
+export async function getStaticPaths() {
+    const paths = await createStaticPaths()
+    return paths
+}
+
+const { slug } = Astro.params
+let subFolders: TreeNode[] = []
+if (slug) {
+    subFolders = await getChildren(slug)
+}
+---
+
+<Layout title="Nahal's Notes">
+    <div>
+        {subFolders.map(folder => (
+            <Folder name={folder.name} type={folder.type} />
+        ))}
+    </div>
+</Layout>

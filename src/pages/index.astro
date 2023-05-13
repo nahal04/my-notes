@@ -1,11 +1,9 @@
 ---
-import { getCollection } from 'astro:content';
+import Folder from '../components/Folder.astro';
 import Layout from '../layouts/Layout.astro';
 import { createTree } from '../lib/tree';
 
-const notesCollection = await getCollection("notes")
-
-const notesTree = createTree(notesCollection)
+const notesTree = await createTree()
 ---
 
 <Layout title="Home | Nahal's Notes">
@@ -19,12 +17,9 @@ const notesTree = createTree(notesCollection)
 		)
 	})} -->
 
-	<div class="grid grid-cols-4 gap-2">
+	<div class="">
 		{notesTree.children.map(item => (
-			<a href={`/notes/${item.name}`} class="border transition-colors duration-300 ease-out cursor-pointer rounded border-gray-700 p-4 hover:bg-slate-800">
-				<h3 class="font-bold text-lg">{item.name}</h3>
-				<p class="text-sm text-gray-500 my-2">{item.type}</p>
-			</a>
+			<Folder name={item.name} type={item.type} />
 		))}
 	</div>
 </Layout>

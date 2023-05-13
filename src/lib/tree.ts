@@ -1,27 +1,28 @@
-import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content"
 
 
-type TreeNode = {
+export type TreeNode = {
     name: string,
     type: "folder" | "file",
     children: TreeNode[]
 }
 
 
-export function createTree(notes: CollectionEntry<'notes'>[]) {
+export async function createTree() {
+    const notes = await getCollection('notes')
     const root: TreeNode = {
         name: "root",
         type: "folder",
         children: []
     }
-
+    
     
     notes.forEach(note => {
         let curr = root
         const pathArr = note.slug.split('/')
         const file = pathArr.pop()
         const folders = pathArr
-        folders.forEach((folder) => {
+        folders.forEach((folder, index, arr) => {
             const dir = curr.children.find(item => item.name === folder)
 
             if (!dir) {
@@ -34,9 +35,8 @@ export function createTree(notes: CollectionEntry<'notes'>[]) {
             } else {
                 curr = dir
             }
-
         })
-
+        
         if (file) {   
             curr.children.push({
                 name: file,
@@ -46,4 +46,39 @@ export function createTree(notes: CollectionEntry<'notes'>[]) {
         }
     })
     return root
+}
+
+export async function createStaticPaths() {
+    const notes = await getCollection('notes')
+    
+    const paths = new Set<string>()
+    
+    notes.forEach(note => {
+        const segments = note.slug.split("/").slice(0, -1)
+        
+        segments.forEach((_, index, arr) => {
+            paths.add(arr.slice(0, index + 1).join("/"))
+        })
+    })
+    const result: { params: { slug: string } }[] = []
+    paths.forEach(item => {
+        result.push({
+            params: {
+                slug: item
+            }
+        })
+    })
+
+    return result
+}
+
+export async function getChildren(path: string) {
+    const tree = await createTree()
+    const segments = path.split("/")
+    let pointer = tree
+    segments.forEach(segment => {
+        pointer = pointer.children.find(treeNode => treeNode.name === segment)!
+    })
+    
+    return pointer.children
 }
