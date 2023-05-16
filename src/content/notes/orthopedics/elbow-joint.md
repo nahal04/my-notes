@@ -1,6 +1,6 @@
 ---
 title: The Elbow Joint
-draft: true
+draft: false
 createdAt: 2023-05-12
 lastUpdated: 2023-05-12
 author: Nahal Rahman
